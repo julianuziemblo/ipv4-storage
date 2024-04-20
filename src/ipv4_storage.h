@@ -1,7 +1,7 @@
 #ifndef _IPV4_COLLECTION_H
 #define _IPV4_COLLECTION_H 1
 
-#define _OCTET_MASK 0b11111111
+#define _BYTE_MASK 0b11111111
 
 #include <stdbool.h>
 #include <stdlib.h>
