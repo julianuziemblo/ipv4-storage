@@ -1,5 +1,5 @@
 # IPv4 Storage
-A simple API for storing and managing a collection of IPv4 prefixes.
+A simple library for storing and managing a collection of IPv4 prefixes.
 
 # Implementation
 The IPv4 prefix collection is implemented using a simple binary tree. This data structure was chosen based on the ease of implementation and its minimal memory consumption (24 bytes/node). The add(), del() and check() functions are all $O(1)$ - they don't depend on the amount of IPv4 prefixes in the system and can make at most 32 derefs. 
@@ -8,13 +8,13 @@ The IPv4 prefix collection is implemented using a simple binary tree. This data 
 All examples can be found in the `examples/src` directory. 
 
 ## Manual
-A simple command line program that lets you test all of the API's functions manually.
+A simple command line program that lets you test all of the library's functions manually.
 
 ## Small operations 
 A simple program presenting some predefined operations on the collection.
 
 ## Bulk
-Examples starting with _"bulk-"_. They are all about using the API's main three functions many times in a row.
+Examples starting with _"bulk-"_. They are all about using the library's main three functions many times in a row.
 
 ## Building and running
 `run.sh` is a simple shell script that lets you run any of the examples, like so:
