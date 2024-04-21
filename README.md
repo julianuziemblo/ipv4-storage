@@ -1,8 +1,8 @@
 # IPv4 collection
-A simple tree-like structure for storing and managing a collection of IPv4 prefixes.
+A simple API with a tree-like structure for storing and managing a collection of IPv4 prefixes.
 
 # Building and running
-`run.sh` is a simple shell script that lets you run any of the examples, e.g. running `examples/src/test1.c`:
+`run.sh` is a simple shell script that lets you run any of the examples, like so:
 ```bash
 ./run.sh examples/src/test.c
 ```
