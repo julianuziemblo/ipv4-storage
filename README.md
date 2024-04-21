@@ -1,4 +1,4 @@
-# IPv4 prefix collection
+# IPv4 Storage
 A simple API for storing and managing a collection of IPv4 prefixes.
 
 # Implementation
