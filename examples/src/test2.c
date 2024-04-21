@@ -1,9 +1,9 @@
-#include "../src/ipv4_storage.h"
+#include "../../src/ipv4_storage.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-#define FILEPATH    "examples/addresses.txt"
-#define N           50
+#define FILEPATH    "examples/prefixes.txt"
+#define N           100
 
 struct ipv4_addr_t {
     int a, b, c, d, mask;
@@ -36,7 +36,7 @@ int main(void) {
         // printf("%d. IPv4: = %d.%d.%d.%d/%d\n", i, ip.a, ip.b, ip.c, ip.d, ip.mask);
         int res = add(ipv4_from_octets((uint8_t)ip.a, (uint8_t)ip.b, (uint8_t)ip.c, (uint8_t)ip.d), (uint8_t)ip.mask);
         if (res == -1) {
-            printf("Couldn't add ipv4 addr to the space.\n");
+            printf("Couldn't add ipv4 addr to the collection.\n");
         }
     }
 

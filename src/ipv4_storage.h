@@ -7,7 +7,14 @@
 #include <stdlib.h>
 
 typedef unsigned int uint32_t;
-typedef unsigned char uint8_t;
+typedef char uint8_t;
+
+typedef union _ipv4_addr {
+    uint32_t number;
+    struct {
+        unsigned char a, b, c, d;
+    } octets;
+} ipv4_addr_t;
 
 /// @brief A node in the IPv4 tree data structure.
 typedef struct _ipv4_tree_node {
@@ -19,13 +26,13 @@ typedef struct _ipv4_tree_node {
 /// @brief Adds the provided IPv4 prefix to the tree.
 /// @param base the IPv4 address prefix
 /// @param mask the IPv4 address mask in CIDR notation
-/// @return 0 on success, -1 on failure.
+/// @return 0 on success or -1 when bad arguments are provided.
 int add(uint32_t base, uint8_t mask);
 
 /// @brief Deletes the provided IPv4 prefix from the tree.
 /// @param base the IPv4 address prefix
 /// @param mask the IPv4 address mask in CIDR notation
-/// @return 0 on success, -1 on failure.
+/// @return 0 on success or -1 when bad arguments are provided.
 int del(uint32_t base, uint8_t mask);
 
 /// @brief Checks, if an IPv4 address is contained in the prefix tree.
@@ -48,7 +55,7 @@ void ipv4_print(uint32_t address, uint8_t mask);
 
 /// @brief Get the root of the tree.
 /// @return A pointer to the root of the binary tree.
-ipv4_tree_node_t* get_root();
+ipv4_tree_node_t* _get_root();
 
 /// @brief Free the IPv4 prefix tree.
 /// @return 0 on success, -1 on failure.
