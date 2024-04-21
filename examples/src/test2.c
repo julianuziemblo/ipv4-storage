@@ -34,7 +34,7 @@ int main(void) {
     for (int i=0; i<N; i++) {
         struct ipv4_addr_t ip = ipv4_addresses[i];
         // printf("%d. IPv4: = %d.%d.%d.%d/%d\n", i, ip.a, ip.b, ip.c, ip.d, ip.mask);
-        int res = add(ipv4_from_octets((uint8_t)ip.a, (uint8_t)ip.b, (uint8_t)ip.c, (uint8_t)ip.d), (uint8_t)ip.mask);
+        int res = add(ipv4_from_octets((int8_t)ip.a, (int8_t)ip.b, (int8_t)ip.c, (int8_t)ip.d), (int8_t)ip.mask);
         if (res == -1) {
             printf("Couldn't add ipv4 addr to the collection.\n");
         }

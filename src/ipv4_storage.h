@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 typedef unsigned int uint32_t;
-typedef char uint8_t;
+typedef char int8_t;
 
 typedef union _ipv4_addr {
     uint32_t number;
@@ -27,31 +27,31 @@ typedef struct _ipv4_tree_node {
 /// @param base the IPv4 address prefix
 /// @param mask the IPv4 address mask in CIDR notation
 /// @return 0 on success or -1 when bad arguments are provided.
-int add(uint32_t base, uint8_t mask);
+int add(uint32_t base, int8_t mask);
 
 /// @brief Deletes the provided IPv4 prefix from the tree.
 /// @param base the IPv4 address prefix
 /// @param mask the IPv4 address mask in CIDR notation
 /// @return 0 on success or -1 when bad arguments are provided.
-int del(uint32_t base, uint8_t mask);
+int del(uint32_t base, int8_t mask);
 
 /// @brief Checks, if an IPv4 address is contained in the prefix tree.
 /// @param ip the IPv4 address to check
 /// @return The biggest mask (of the most precise prefix) on match, -1 on no match.
-uint8_t check(uint32_t ip);
+int8_t check(uint32_t ip);
 
-/// @brief Produces an IPv4 address from 4 octets.
+/// @brief Creates an IPv4 address from 4 octets.
 /// @param a octet 1
 /// @param b octet 2
 /// @param c octet 3
 /// @param d octet 4
 /// @return A 32-bit unsigned integer representing the IPv4 address.
-uint32_t ipv4_from_octets(uint8_t a, uint8_t b, uint8_t c, uint8_t d);
+uint32_t ipv4_from_octets(int8_t a, int8_t b, int8_t c, int8_t d);
 
 /// @brief Prints the provided IPv4 address in the CIDR notation.
 /// @param address the IPv4 address to print
 /// @param mask the IPv4 mask in CIDR notation
-void ipv4_print(uint32_t address, uint8_t mask);
+void ipv4_print(uint32_t address, int8_t mask);
 
 /// @brief Get the root of the tree.
 /// @return A pointer to the root of the binary tree.

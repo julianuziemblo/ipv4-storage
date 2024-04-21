@@ -6,7 +6,7 @@
 #define FILEPATH    "examples/addresses.txt"
 
 ipv4_addr_t ipv4_addresses[N];
-uint8_t masks[N];
+int8_t masks[N];
 
 void read_addresses() {
     FILE* fptr = fopen(FILEPATH, "r");
@@ -20,8 +20,8 @@ void read_addresses() {
     for (int i=0; i<N; i++) {
         int a, b, c, d, mask;
         fscanf(fptr, "%d %d %d %d %d", &a, &b, &c, &d, &mask);
-        ipv4_addresses[i] = (ipv4_addr_t) { .number = ipv4_from_octets((uint8_t)a, (uint8_t)b, (uint8_t)c, (uint8_t)d) };
-        masks[i] = (uint8_t)mask;
+        ipv4_addresses[i] = (ipv4_addr_t) { .number = ipv4_from_octets((int8_t)a, (int8_t)b, (int8_t)c, (int8_t)d) };
+        masks[i] = (int8_t)mask;
     }
 
     fclose(fptr);
@@ -33,7 +33,7 @@ int main(void) {
 
     for (int i=0; i<N; i++) {
         ipv4_addr_t ip = ipv4_addresses[i];
-        uint8_t mask = masks[i];
+        int8_t mask = masks[i];
 
         int res = add(ip.number, mask);
         if (res == -1) {

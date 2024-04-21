@@ -71,7 +71,7 @@ void _print_tree(ipv4_tree_node_t* node, int count, const char* label) {
 #endif
 
 
-int add(uint32_t base, uint8_t mask) {
+int add(uint32_t base, int8_t mask) {
     // invalid mask - integer outside the range 0..32 (inclusive)
     if (mask < 0 || mask > 32)
         return -1;
@@ -128,7 +128,7 @@ int add(uint32_t base, uint8_t mask) {
     return 0;
 }
 
-int del(uint32_t base, uint8_t mask) {
+int del(uint32_t base, int8_t mask) {
     // invalid mask - integer outside the range 0..32 (inclusive)
     if (mask < 0 || mask > 32) {
         return -1;
@@ -167,11 +167,11 @@ int del(uint32_t base, uint8_t mask) {
     return 0;
 }
 
-uint8_t check(uint32_t ip) {
+int8_t check(uint32_t ip) {
     ipv4_tree_node_t* current_node = _root;
-    uint8_t max_mask = -1;
+    int8_t max_mask = -1;
 
-    uint8_t layer = 0;
+    int8_t layer = 0;
     while (current_node != NULL) {
         if (current_node->occupied) {
             max_mask = layer;
@@ -188,7 +188,7 @@ uint8_t check(uint32_t ip) {
     return max_mask;
 }
 
-void ipv4_print(uint32_t address, uint8_t mask) {
+void ipv4_print(uint32_t address, int8_t mask) {
     printf("%d.%d.%d.%d/%d\n", 
         (address >> 24 & _BYTE_MASK),
         (address >> 16 & _BYTE_MASK),
@@ -198,7 +198,7 @@ void ipv4_print(uint32_t address, uint8_t mask) {
     );
 }
 
-uint32_t ipv4_from_octets(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
+uint32_t ipv4_from_octets(int8_t a, int8_t b, int8_t c, int8_t d) {
     return (a << 24) + (b << 16) + (c << 8) + d;
 }
 

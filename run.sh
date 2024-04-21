@@ -13,7 +13,7 @@ if [ $# -gt 1 ]; then
 fi
 
 
-gcc -o ${1}_TEMP_EXE_.exe $1 src/ipv4_storage.c -Wall -std=c99
+gcc -o ${1}_TEMP_EXE_.exe $1 src/ipv4_storage.c -Wall
 ./${1}_TEMP_EXE_.exe
 rm -rf ${1}_TEMP_EXE_.exe
 read -p "Press any key to continue..."

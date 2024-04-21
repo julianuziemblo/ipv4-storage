@@ -3,7 +3,7 @@
 
 int main(void) {
     uint32_t ip = ipv4_from_octets(192,0,24,0);
-    uint8_t mask = 30;
+    int8_t mask = 30;
     ipv4_print(ip, mask);
 
     int add_res = add(ip, mask);
@@ -22,7 +22,7 @@ int main(void) {
     _print_tree(NULL, 0, "head");
 
     printf("###############CHECK\n");
-    uint8_t max_mask = check(ipv4_from_octets(192, 0, 24, 1));
+    int8_t max_mask = check(ipv4_from_octets(192, 0, 24, 1));
     printf("Max mask: %d\n", max_mask);
 
     printf("End of test `%s`\n", __FILE__);
