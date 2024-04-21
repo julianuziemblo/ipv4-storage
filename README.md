@@ -1,21 +1,43 @@
-# IPv4 collection
-A simple API with a tree-like structure for storing and managing a collection of IPv4 prefixes.
+# IPv4 prefix collection
+A simple API for storing and managing a collection of IPv4 prefixes.
 
-# Building and running
+# Implementation
+The IPv4 prefix collection is implemented using a simple binary tree. This data structure was chosen based on the ease of implementation and its minimal memory consumption (24 bytes/node). The add(), del() and check() functions are all $O(1)$ - they don't depend on the amount of IPv4 prefixes in the system and can make at most 32 derefs. 
+
+# Examples
+All examples can be found in the `examples/src` directory. 
+
+## Manual
+A simple command line program that lets you test all of the API's functions manually.
+
+## Small operations 
+A simple program presenting some predefined operations on the collection.
+
+## Bulk
+Examples starting with _"bulk-"_. They are all about using the API's main three functions many times in a row.
+
+## Building and running
 `run.sh` is a simple shell script that lets you run any of the examples, like so:
 ```bash
-./run.sh examples/src/test.c
+./run.sh examples/src/manual_example.c
 ```
 
-You can also of course build and run the example scripts on your own with e.g. GCC, like so:
+You can also of course build and run the example scripts on your own, with e.g. GCC, like so:
 ```bash
-gcc -o test1 examples/src/test1.c src/ipv4_storage.c -Wall
-./test1
+gcc -o manual_example examples/src/manual_example.c src/ipv4_storage.c -Wall
+./manual_example
 ```
 
 # Functions
-- `add(uint32_t base, int8_t mask)`: add an IPv4 prefix to the collection.
-- `del(uint32_t base, int8_t mask)`: delete an IPv4 prefix from the collection.
-- `check(uint32_t ip)`: check, if an IPv4 address is contained in the tree.
-- `ipv4_from_octets(int8_t a, int8_t b, int8_t c, int8_t d)`: creates an IPv4 address from 4 octets.
-- `ipv4_print(uint32_t address, uint8_t mask)`: prints the provided IPv4 address to the stdout.
+- `add(base, mask)`: add an IPv4 prefix to the collection.
+- `del(base, mask)`: delete an IPv4 prefix from the collection.
+- `check(ip)`: check, if an IPv4 address is contained in the tree.
+- `allocated_nodes()`: returns the number of allocated nodes in the tree.
+- `size()`: returns the number of IPv4 prefixes in the tree.
+- `free_unused()`: frees the memory of unused nodes in the tree.
+- `ipv4_from_octets(a, b, c, d)`: creates an IPv4 address from 4 octets.
+- `ipv4_prefix_print(address, mask)`: prints the provided IPv4 prefix to the stdout in the CIDR format.
+- `ipv4_print(address)`: prints the provided IPv4 address to the stdout.
+
+# Dependencies
+- `gcc` - for the `run.sh` script

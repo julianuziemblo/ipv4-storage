@@ -8,6 +8,8 @@
 #define GET_NTH_BIT(_number, _n)       (((_number) >> (_n)) & 0b1)
 
 static ipv4_tree_node_t* _root = NULL;
+static size_t _allocated_nodes = 0;
+static size_t _size = 0;
 
 int add(uint32_t base, int8_t mask) {
     // invalid mask - integer outside the range 0..32 (inclusive)
@@ -26,6 +28,7 @@ int add(uint32_t base, int8_t mask) {
 
         // initiailze to 0
         memset(_root, 0, sizeof(*_root));
+        _allocated_nodes++;
     }
 
     ipv4_tree_node_t* current_node = _root;
@@ -41,6 +44,7 @@ int add(uint32_t base, int8_t mask) {
 
                 // initialization to 0
                 memset(current_node->right, 0, sizeof(*current_node->right));
+                _allocated_nodes++;
             }
             current_node = current_node->right;
         } else {
@@ -53,12 +57,17 @@ int add(uint32_t base, int8_t mask) {
 
                 // initialization to 0
                 memset(current_node->left, 0, sizeof(*current_node->left));
+                _allocated_nodes++;
             }
             current_node = current_node->left;
         }
     }
 
-    current_node->occupied = true;
+    if (!current_node->occupied) {
+        _size++;
+        current_node->occupied = true;
+    }
+    
     return 0;
 }
 
@@ -95,6 +104,7 @@ int del(uint32_t base, int8_t mask) {
 
     if (current_node->occupied) {
         current_node->occupied = false;
+        _size--;
     }
 
     return 0;
@@ -102,12 +112,12 @@ int del(uint32_t base, int8_t mask) {
 
 int8_t check(uint32_t ip) {
     ipv4_tree_node_t* current_node = _root;
-    int8_t max_mask = -1;
+    int8_t mask = -1;
 
     int8_t layer = 0;
     while (current_node != NULL) {
         if (current_node->occupied) {
-            max_mask = layer;
+            mask = layer;
         }
 
         if (GET_NTH_BIT(ip, 31-layer)) {
@@ -118,10 +128,39 @@ int8_t check(uint32_t ip) {
         layer++;
     }
 
-    return max_mask;
+    return mask;
 }
 
-void ipv4_print(uint32_t address, int8_t mask) {
+size_t allocated_nodes() {
+    return _allocated_nodes;
+}
+
+size_t size() {
+    return _size;
+}
+
+bool _free_unused_internal(ipv4_tree_node_t* node) {
+    if (node == NULL) return true;
+    if (node->occupied) return false;
+    bool should_free_right = _free_unused_internal(node->right);
+    if (should_free_right) node->right = NULL;
+
+    bool should_free_left  = _free_unused_internal(node->left);
+    if (should_free_left) node->left = NULL;
+
+    if (should_free_right && should_free_left) {
+        free(node);
+        _allocated_nodes--;
+        return true;
+    }
+    return false;
+}
+
+void free_unused() {
+    (void)_free_unused_internal(_root);
+}
+
+void ipv4_prefix_print(uint32_t address, int8_t mask) {
     printf("%d.%d.%d.%d/%d\n", 
         (address >> 24 & _BYTE_MASK),
         (address >> 16 & _BYTE_MASK),
@@ -131,6 +170,15 @@ void ipv4_print(uint32_t address, int8_t mask) {
     );
 }
 
-uint32_t ipv4_from_octets(int8_t a, int8_t b, int8_t c, int8_t d) {
+void ipv4_print(uint32_t address) {
+    printf("%d.%d.%d.%d\n", 
+        (address >> 24 & _BYTE_MASK),
+        (address >> 16 & _BYTE_MASK),
+        (address >> 8  & _BYTE_MASK),
+        (address       & _BYTE_MASK)
+    );
+}
+
+uint32_t ipv4_from_octets(uint8_t a, uint8_t  b, uint8_t  c, uint8_t  d) {
     return (a << 24) + (b << 16) + (c << 8) + d;
 }
