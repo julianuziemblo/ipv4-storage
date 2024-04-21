@@ -45,7 +45,5 @@ int main(void) {
         }
     }
 
-    _print_tree(NULL, 0, "head");
-
     return 0;
 }

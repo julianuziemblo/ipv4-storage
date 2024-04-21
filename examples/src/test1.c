@@ -13,13 +13,11 @@ int main(void) {
     printf("127.0.0.1/32: %d\n", add(ipv4_from_octets(127,0,0,1), 32));
 
     printf("###############BEFORE DELETE\n");
-    _print_tree(NULL, 0, "head");
 
     (void)del(ipv4_from_octets(127,0,0,1), 32);
     (void)add(ipv4_from_octets(192 ,0 ,0 ,0), 16);
 
     printf("###############AFTER DELETE\n");
-    _print_tree(NULL, 0, "head");
 
     printf("###############CHECK\n");
     int8_t max_mask = check(ipv4_from_octets(192, 0, 24, 1));

@@ -4,72 +4,10 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define LOOP                            for(;;)
 #define MASK_CIDR_TO_32BIT(_mask)      (~((1 << (32 - (_mask))) - 1))
 #define GET_NTH_BIT(_number, _n)       (((_number) >> (_n)) & 0b1)
 
 static ipv4_tree_node_t* _root = NULL;
-
-#define _DEBUG 1
-#ifdef _DEBUG
-static int add_counter = 0;
-static int created_nodes = 0;
-static int occupied_nodes = 0;
-
-void _occupied_nodes(ipv4_tree_node_t* node, int layer) {
-    if (node == NULL) return;
-    if (node->occupied) occupied_nodes++;
-    _occupied_nodes(node->left, layer+1);
-    _occupied_nodes(node->right,layer+1);
-}
-
-int get_occupied_nodes(ipv4_tree_node_t* start) {
-    occupied_nodes = 0;
-
-    if (start == NULL) return 0;
-    if (start->occupied) occupied_nodes++;
-    _occupied_nodes(start->left, 1);
-    _occupied_nodes(start->right, 1);
-
-    return occupied_nodes;
-}
-
-// Function to print the binary tree in a user-friendly format
-void printTree(ipv4_tree_node_t* root, int level) {
-    if (root == NULL) return;
-
-    // Print spaces proportional to the level for better visualization
-    for (int i = 0; i < level; i++)
-        printf(" ");
-
-    // Print the data of the current node
-    printf("%s\n", root->occupied ? "y" : "n");
-
-    // Recursively print the left subtree
-    printTree(root->left, level + 1);
-
-    // Recursively print the right subtree
-    printTree(root->right, level + 1);
-}
-
-void _print_tree(ipv4_tree_node_t* node, int count, const char* label) {
-    if (node == NULL && strcmp(label, "head") == 0) {
-        printf("Nodes: %d\n", add_counter);
-        printf("Nodes created: %d = %lld B = %lld kB\n", 
-            created_nodes, 
-            created_nodes * sizeof(ipv4_tree_node_t), 
-            created_nodes * sizeof(ipv4_tree_node_t) / 1024);
-        printf("Occupied nodes: %d\n", get_occupied_nodes(_root));
-        node = _root;
-        printTree(_root, 0);
-    }
-    if (node == NULL) return;
-    printf("layer %d, l/r: %s, occupied: %s\n", count, label, node->occupied ? "yes" : "no");
-    _print_tree(node->left, count+1, "left");
-    _print_tree(node->right, count+1, "right");
-}
-#endif
-
 
 int add(uint32_t base, int8_t mask) {
     // invalid mask - integer outside the range 0..32 (inclusive)
@@ -88,7 +26,6 @@ int add(uint32_t base, int8_t mask) {
 
         // initiailze to 0
         memset(_root, 0, sizeof(*_root));
-        created_nodes++;
     }
 
     ipv4_tree_node_t* current_node = _root;
@@ -104,8 +41,6 @@ int add(uint32_t base, int8_t mask) {
 
                 // initialization to 0
                 memset(current_node->right, 0, sizeof(*current_node->right));
-
-                created_nodes++;
             }
             current_node = current_node->right;
         } else {
@@ -124,7 +59,6 @@ int add(uint32_t base, int8_t mask) {
     }
 
     current_node->occupied = true;
-    add_counter++;
     return 0;
 }
 
@@ -161,7 +95,6 @@ int del(uint32_t base, int8_t mask) {
 
     if (current_node->occupied) {
         current_node->occupied = false;
-        add_counter--;
     }
 
     return 0;
@@ -200,8 +133,4 @@ void ipv4_print(uint32_t address, int8_t mask) {
 
 uint32_t ipv4_from_octets(int8_t a, int8_t b, int8_t c, int8_t d) {
     return (a << 24) + (b << 16) + (c << 8) + d;
-}
-
-ipv4_tree_node_t* _get_root() {
-    return _root;
 }

@@ -53,14 +53,4 @@ uint32_t ipv4_from_octets(int8_t a, int8_t b, int8_t c, int8_t d);
 /// @param mask the IPv4 mask in CIDR notation
 void ipv4_print(uint32_t address, int8_t mask);
 
-/// @brief Get the root of the tree.
-/// @return A pointer to the root of the binary tree.
-ipv4_tree_node_t* _get_root();
-
-/// @brief Free the IPv4 prefix tree.
-/// @return 0 on success, -1 on failure.
-int ipv4_tree_free();
-
-void _print_tree(ipv4_tree_node_t* start, int count, const char* label);
-
 #endif

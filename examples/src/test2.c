@@ -40,8 +40,6 @@ int main(void) {
         }
     }
 
-    _print_tree(NULL, 0, "head");
-
     printf("PROGRAM END\n");
     return 0;
 }
