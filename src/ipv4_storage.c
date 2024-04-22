@@ -28,7 +28,6 @@ int add(uint32_t base, int8_t mask) {
 
         // initiailze to 0
         memset(_root, 0, sizeof(*_root));
-        _allocated_nodes++;
     }
 
     ipv4_tree_node_t* current_node = _root;
@@ -44,7 +43,6 @@ int add(uint32_t base, int8_t mask) {
 
                 // initialization to 0
                 memset(current_node->right, 0, sizeof(*current_node->right));
-                _allocated_nodes++;
             }
             current_node = current_node->right;
         } else {
@@ -57,7 +55,6 @@ int add(uint32_t base, int8_t mask) {
 
                 // initialization to 0
                 memset(current_node->left, 0, sizeof(*current_node->left));
-                _allocated_nodes++;
             }
             current_node = current_node->left;
         }
@@ -131,7 +128,16 @@ int8_t check(uint32_t ip) {
     return mask;
 }
 
+void _count_allocated(ipv4_tree_node_t* node) {
+    if (node == NULL) return;
+    _allocated_nodes++;
+    _count_allocated(node->left);
+    _count_allocated(node->right);
+}
+
 size_t allocated_nodes() {
+    _allocated_nodes = 0;
+    _count_allocated(_root);
     return _allocated_nodes;
 }
 
@@ -143,14 +149,18 @@ bool _free_unused_internal(ipv4_tree_node_t* node) {
     if (node == NULL) return true;
     if (node->occupied) return false;
     bool should_free_right = _free_unused_internal(node->right);
-    if (should_free_right) node->right = NULL;
+    if (should_free_right) {
+        free(node->right);
+        node->right = NULL;
+    }
 
     bool should_free_left  = _free_unused_internal(node->left);
-    if (should_free_left) node->left = NULL;
+    if (should_free_left) {
+        free(node->left);
+        node->left = NULL;
+    }
 
     if (should_free_right && should_free_left) {
-        free(node);
-        _allocated_nodes--;
         return true;
     }
     return false;
