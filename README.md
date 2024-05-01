@@ -2,7 +2,7 @@
 A simple C library for storing and managing a collection of IPv4 prefixes.
 
 # Implementation
-The IPv4 prefix collection is implemented using a simple binary tree. This data structure was chosen based on the ease of implementation and its minimal memory consumption (24 bytes/node). The add(), del() and check() functions are all $O(1)$ - they don't depend on the amount of IPv4 prefixes in the system and can make __at most__ 32 derefs. 
+The IPv4 prefix collection is implemented using a simple binary tree. This data structure was chosen based on the ease of implementation and its minimal memory consumption (24 bytes/node).
 
 I chose not to deallocate any resources with the del() function - for further node adding. Instead, another function, free_unused(), is provided. It gives the end user more flexibility when it comes to memory management.
 
